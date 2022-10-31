@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net452;netstandard2.0;net6.0</TargetFrameworks>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <Authors>Ellpeck</Authors>
+        <Description>Enum-like single-instance values with additional capabilities, including dynamic addition of new arbitrary values and flags</Description>
+        <PackageTags>enum enumeration dynamic bigint biginteger long</PackageTags>
+        <PackageProjectUrl>https://github.com/Ellpeck/DynamicEnums</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Ellpeck/DynamicEnums</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <VersionPrefix>0.0.1</VersionPrefix>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFramework)'=='net452'" />
+    </ItemGroup>
+    
+    
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+</Project>

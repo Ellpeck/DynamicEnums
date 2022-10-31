@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicEnums", "DynamicEnums\DynamicEnums.csproj", "{1657964D-2503-426A-8514-D020660BEE4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8E110BC2-38FD-404A-B5BD-02C771B0D1D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1657964D-2503-426A-8514-D020660BEE4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1657964D-2503-426A-8514-D020660BEE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1657964D-2503-426A-8514-D020660BEE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1657964D-2503-426A-8514-D020660BEE4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E110BC2-38FD-404A-B5BD-02C771B0D1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E110BC2-38FD-404A-B5BD-02C771B0D1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E110BC2-38FD-404A-B5BD-02C771B0D1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E110BC2-38FD-404A-B5BD-02C771B0D1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

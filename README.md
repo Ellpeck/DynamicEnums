@@ -1,2 +1,2 @@
-# DynamicEnum
-Enum-like single-instance values with additional capabilities, including dynamic addition of new arbitrary values
+# DynamicEnums
+Enum-like single-instance values with additional capabilities, including dynamic addition of new arbitrary values and flags
