@@ -9,7 +9,7 @@ pipeline {
 
     stage('Pack') {
       steps {
-        sh 'find . -type f -name \\\'*.nupkg\\\' -delete'
+        sh 'find . -type f -name "*.nupkg" -delete'
         sh 'dotnet pack --version-suffix ${BUILD_NUMBER}'
       }
     }
