@@ -19,7 +19,7 @@ pipeline {
         branch 'main'
       }
       steps {
-        sh 'dotnet nuget push -s https://nuget.ellpeck.de/v3/index.json **/*.nupkg -k $BAGET -n true'
+        sh 'dotnet nuget push -s https://nuget.ellpeck.de/v3/index.json **/*.nupkg -k $BAGET -n'
       }
     }
   }
