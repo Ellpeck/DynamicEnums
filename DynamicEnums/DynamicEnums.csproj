@@ -13,7 +13,7 @@
         <RepositoryUrl>https://github.com/Ellpeck/DynamicEnums</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <VersionPrefix>1.0.0</VersionPrefix>
+        <VersionPrefix>1.0.1</VersionPrefix>
     </PropertyGroup>
     
     <ItemGroup>
