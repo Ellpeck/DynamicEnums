@@ -13,18 +13,18 @@ namespace DynamicEnums {
     /// <summary>
     /// A dynamic enum is a class that represents enum-like single-instance value behavior with additional capabilities, including dynamic addition of new arbitrary values.
     /// A dynamic enum uses <see cref="BigInteger"/> as its underlying type, allowing for an arbitrary number of enum values to be created, even when a <see cref="FlagsAttribute"/>-like structure is used that would only allow for up to 64 values in a regular enum.
-    /// All enum operations including <see cref="And{T}"/>, <see cref="Or{T}"/>, <see cref="Xor{T}"/> and <see cref="Neg{T}"/> are supported and can be implemented in derived classes using operator overloads.
+    /// All boolean operations including <see cref="And{T}"/>, <see cref="Or{T}"/>, <see cref="Xor{T}"/> and <see cref="Neg{T}"/> are supported and can be implemented in derived classes using operator overloads.
     /// To create a custom dynamic enum, simply create a class that extends <see cref="DynamicEnum"/>. New values can then be added using <see cref="Add{T}"/>, <see cref="AddValue{T}"/> or <see cref="AddFlag{T}"/>.
     /// </summary>
     /// <remarks>
     /// To include enum-like operator overloads in a dynamic enum named MyEnum, the following code can be used:
     /// <code>
-    /// public static implicit operator BigInteger(MyEnum value) => GetValue(value);
-    /// public static implicit operator MyEnum(BigInteger value) => GetEnumValue&lt;MyEnum&gt;(value);
-    /// public static MyEnum operator |(MyEnum left, MyEnum right) => Or(left, right);
-    /// public static MyEnum operator &amp;(MyEnum left, MyEnum right) => And(left, right);
-    /// public static MyEnum operator ^(MyEnum left, MyEnum right) => Xor(left, right);
-    /// public static MyEnum operator ~(MyEnum value) => Neg(value);
+    /// public static implicit operator BigInteger(MyEnum value) => DynamicEnum.GetValue(value);
+    /// public static implicit operator MyEnum(BigInteger value) => DynamicEnum.GetEnumValue&lt;MyEnum&gt;(value);
+    /// public static MyEnum operator |(MyEnum left, MyEnum right) => DynamicEnum.Or(left, right);
+    /// public static MyEnum operator &amp;(MyEnum left, MyEnum right) => DynamicEnum.And(left, right);
+    /// public static MyEnum operator ^(MyEnum left, MyEnum right) => DynamicEnum.Xor(left, right);
+    /// public static MyEnum operator ~(MyEnum value) => DynamicEnum.Neg(value);
     /// </code>
     /// </remarks>
     public abstract class DynamicEnum {
