@@ -105,9 +105,9 @@ namespace DynamicEnums {
         /// <returns>The newly created enum value</returns>
         /// <exception cref="ArgumentException">Thrown if the name or value passed are already present</exception>
         public static T Add<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(string name, BigInteger value) where T : DynamicEnum {
             var storage = DynamicEnum.GetStorage(typeof(T));
 
@@ -135,9 +135,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type to add this value to</typeparam>
         /// <returns>The newly created enum value</returns>
         public static T AddValue<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(string name) where T : DynamicEnum {
             BigInteger value = 0;
             while (DynamicEnum.IsDefined(typeof(T), value))
@@ -154,9 +154,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type to add this value to</typeparam>
         /// <returns>The newly created enum value</returns>
         public static T AddFlag<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(string name) where T : DynamicEnum {
             BigInteger value = 1;
             while (DynamicEnum.IsDefined(typeof(T), value))
@@ -207,9 +207,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type of enum.</typeparam>
         /// <returns>All of the unique flags that make up <paramref name="combinedFlag"/>.</returns>
         public static IEnumerable<T> GetUniqueFlags<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(T combinedFlag) where T : DynamicEnum {
             // we can't use the same method here as EnumHelper.GetUniqueFlags since DynamicEnum doesn't guarantee sorted values
             var max = DynamicEnum.GetValues<T>().Max(DynamicEnum.GetValue);
@@ -232,9 +232,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type of the values</typeparam>
         /// <returns>The bitwise OR (|) combination</returns>
         public static T Or<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(T left, T right) where T : DynamicEnum {
             var cache = DynamicEnum.GetStorage(typeof(T)).OrCache;
             if (!cache.TryGetValue((left, right), out var ret)) {
@@ -252,9 +252,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type of the values</typeparam>
         /// <returns>The bitwise AND (&amp;) combination</returns>
         public static T And<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(T left, T right) where T : DynamicEnum {
             var cache = DynamicEnum.GetStorage(typeof(T)).AndCache;
             if (!cache.TryGetValue((left, right), out var ret)) {
@@ -272,9 +272,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type of the values</typeparam>
         /// <returns>The bitwise XOR (^) combination</returns>
         public static T Xor<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(T left, T right) where T : DynamicEnum {
             var cache = DynamicEnum.GetStorage(typeof(T)).XorCache;
             if (!cache.TryGetValue((left, right), out var ret)) {
@@ -291,9 +291,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type of the values</typeparam>
         /// <returns>The bitwise NEG (~) value</returns>
         public static T Neg<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(T value) where T : DynamicEnum {
             var cache = DynamicEnum.GetStorage(typeof(T)).NegCache;
             if (!cache.TryGetValue(value, out var ret)) {
@@ -319,9 +319,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type that the returned dynamic enum should have</typeparam>
         /// <returns>The defined or combined dynamic enum value</returns>
         public static T GetEnumValue<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(BigInteger value) where T : DynamicEnum {
             return (T) DynamicEnum.GetEnumValue(typeof(T), value);
         }
@@ -333,9 +333,9 @@ namespace DynamicEnums {
         /// <param name="value">The value whose dynamic enum value to get</param>
         /// <returns>The defined or combined dynamic enum value</returns>
         public static DynamicEnum GetEnumValue(
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             Type type, BigInteger value) {
             var storage = DynamicEnum.GetStorage(type);
 
@@ -360,9 +360,9 @@ namespace DynamicEnums {
         /// <typeparam name="T">The type of the dynamic enum value to parse</typeparam>
         /// <returns>The parsed enum value, or null if parsing fails</returns>
         public static T Parse<
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             T>(string strg) where T : DynamicEnum {
             return (T) DynamicEnum.Parse(typeof(T), strg);
         }
@@ -376,9 +376,9 @@ namespace DynamicEnums {
         /// <param name="strg">The string to parse into a dynamic enum value</param>
         /// <returns>The parsed enum value, or null if parsing fails</returns>
         public static DynamicEnum Parse(
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             Type type, string strg) {
             var cache = DynamicEnum.GetStorage(type).ParseCache;
             if (!cache.TryGetValue(strg, out var cached)) {
@@ -428,9 +428,9 @@ namespace DynamicEnums {
         }
 
         private static DynamicEnum Construct(
-            #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-            #endif
+#endif
             Type type, string name, BigInteger value) {
             return (DynamicEnum) Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[] {name, value}, CultureInfo.InvariantCulture);
         }
