@@ -9,7 +9,7 @@ steps:
     commands: dotnet test --collect:"XPlat Code Coverage"
   pack:
     image: *image
-    commands: dotnet pack --version-suffix $CI_PIPELINE_NUMBER
+    commands: dotnet pack --version-suffix ci.$CI_PIPELINE_NUMBER
   publish:
     image: *image
     when:
