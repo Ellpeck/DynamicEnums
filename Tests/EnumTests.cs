@@ -86,7 +86,7 @@ public class EnumTests {
 
     private class TestDynamicEnum : DynamicEnum {
 
-        public TestDynamicEnum(string name, BigInteger value) : base(name, value) {}
+        public TestDynamicEnum(string name, BigInteger value, bool defined) : base(name, value, defined) {}
 
     }
 

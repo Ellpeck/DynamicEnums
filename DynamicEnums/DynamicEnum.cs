@@ -42,7 +42,8 @@ namespace DynamicEnums {
         /// </summary>
         /// <param name="name">The name of the enum value</param>
         /// <param name="value">The value</param>
-        protected DynamicEnum(string name, BigInteger value) {
+        /// <param name="defined">Whether this enum value <see cref="IsDefined(DynamicEnum)"/>, and thus, not a combined flag.</param>
+        protected DynamicEnum(string name, BigInteger value, bool defined) {
             this.value = value;
             this.name = name;
         }
@@ -121,7 +122,7 @@ namespace DynamicEnums {
                     throw new ArgumentException($"Duplicate name {name}", nameof(name));
             }
 
-            var ret = DynamicEnum.Construct(typeof(T), name, value);
+            var ret = DynamicEnum.Construct(typeof(T), name, value, true);
             storage.Values.Add(value, ret);
             return (T) ret;
         }
@@ -345,7 +346,7 @@ namespace DynamicEnums {
 
             // otherwise, cache the combined value
             if (!storage.FlagCache.TryGetValue(value, out var combined)) {
-                combined = DynamicEnum.Construct(type, null, value);
+                combined = DynamicEnum.Construct(type, null, value, false);
                 storage.FlagCache.Add(value, combined);
             }
             return combined;
@@ -431,8 +432,8 @@ namespace DynamicEnums {
 #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-            Type type, string name, BigInteger value) {
-            return (DynamicEnum) Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[] {name, value}, CultureInfo.InvariantCulture);
+            Type type, string name, BigInteger value, bool defined) {
+            return (DynamicEnum) Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[] {name, value, defined}, CultureInfo.InvariantCulture);
         }
 
         private class Storage {
