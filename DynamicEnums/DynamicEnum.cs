@@ -94,15 +94,18 @@ namespace DynamicEnums {
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString() {
-            if (this.name == null) {
+            if (this.name != null)
+                return this.name;
+
+            var storage = DynamicEnum.GetStorage(this.GetType());
+            if (!storage.CombinedNameCache.TryGetValue(this, out var combinedName)) {
                 // Enum ToString remarks: https://learn.microsoft.com/en-us/dotnet/api/system.enum.tostring
                 // If the FlagsAttribute is not applied to this enumerated type and there is a named constant equal to the value of this instance, then the return value is a string containing the name of the constant.
                 // If the FlagsAttribute is applied and there is a combination of one or more named constants equal to the value of this instance, then the return value is a string containing a delimiter-separated list of the names of the constants.
                 // Otherwise, the return value is the string representation of the numeric value of this instance.
-
                 var included = new StringBuilder();
                 var remain = DynamicEnum.GetValue(this);
-                foreach (var other in DynamicEnum.GetValues(this.GetType())) {
+                foreach (var other in storage.Values.Values) {
                     if (this.HasAllFlags(other)) {
                         var otherValue = DynamicEnum.GetValue(other);
                         if (otherValue != 0) {
@@ -113,9 +116,10 @@ namespace DynamicEnums {
                         }
                     }
                 }
-                this.name = included.Length > 0 && remain == 0 ? included.ToString() : DynamicEnum.GetValue(this).ToString();
+                combinedName = included.Length > 0 && remain == 0 ? included.ToString() : DynamicEnum.GetValue(this).ToString();
+                storage.CombinedNameCache.Add(this, combinedName);
             }
-            return this.name;
+            return combinedName;
         }
 
         /// <summary>
@@ -476,6 +480,7 @@ namespace DynamicEnums {
             public readonly Dictionary<(DynamicEnum, DynamicEnum), DynamicEnum> AndCache = new Dictionary<(DynamicEnum, DynamicEnum), DynamicEnum>();
             public readonly Dictionary<(DynamicEnum, DynamicEnum), DynamicEnum> XorCache = new Dictionary<(DynamicEnum, DynamicEnum), DynamicEnum>();
             public readonly Dictionary<DynamicEnum, DynamicEnum> NegCache = new Dictionary<DynamicEnum, DynamicEnum>();
+            public readonly Dictionary<DynamicEnum, string> CombinedNameCache = new Dictionary<DynamicEnum, string>();
 
             public void ClearCaches() {
                 this.FlagCache.Clear();
@@ -484,6 +489,7 @@ namespace DynamicEnums {
                 this.AndCache.Clear();
                 this.XorCache.Clear();
                 this.NegCache.Clear();
+                this.CombinedNameCache.Clear();
             }
 
         }
