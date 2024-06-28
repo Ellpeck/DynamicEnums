@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Text;
 
 #if NET6_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
@@ -85,14 +86,25 @@ namespace DynamicEnums {
         /// <returns>A string that represents the current object.</returns>
         public override string ToString() {
             if (this.name == null) {
-                var included = new List<DynamicEnum>();
-                if (DynamicEnum.GetValue(this) != 0) {
-                    foreach (var v in DynamicEnum.GetValues(this.GetType())) {
-                        if (this.HasAllFlags(v) && DynamicEnum.GetValue(v) != 0)
-                            included.Add(v);
+                // Enum ToString remarks: https://learn.microsoft.com/en-us/dotnet/api/system.enum.tostring
+                // If the FlagsAttribute is not applied to this enumerated type and there is a named constant equal to the value of this instance, then the return value is a string containing the name of the constant.
+                // If the FlagsAttribute is applied and there is a combination of one or more named constants equal to the value of this instance, then the return value is a string containing a delimiter-separated list of the names of the constants.
+                // Otherwise, the return value is the string representation of the numeric value of this instance.
+
+                var included = new StringBuilder();
+                var remain = DynamicEnum.GetValue(this);
+                foreach (var other in DynamicEnum.GetValues(this.GetType())) {
+                    if (this.HasAllFlags(other)) {
+                        var otherValue = DynamicEnum.GetValue(other);
+                        if (otherValue != 0) {
+                            if (included.Length > 0)
+                                included.Append(" | ");
+                            included.Append(other);
+                            remain &= ~otherValue;
+                        }
                     }
                 }
-                this.name = included.Count > 0 ? string.Join(" | ", included) : DynamicEnum.GetValue(this).ToString();
+                this.name = included.Length > 0 && remain == 0 ? included.ToString() : DynamicEnum.GetValue(this).ToString();
             }
             return this.name;
         }

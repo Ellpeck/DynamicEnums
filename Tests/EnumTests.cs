@@ -32,6 +32,7 @@ public class EnumTests {
         var flags = new TestDynamicEnum[100];
         for (var i = 0; i < flags.Length; i++)
             flags[i] = DynamicEnum.AddFlag<TestDynamicEnum>("Flag" + i);
+        var zero = DynamicEnum.Add<TestDynamicEnum>("Zero", 0);
         var combined = DynamicEnum.Add<TestDynamicEnum>("Combined", DynamicEnum.GetValue(DynamicEnum.Or(flags[7], flags[13])));
 
         Assert.AreEqual(DynamicEnum.GetValue(flags[7]), BigInteger.One << 7);
@@ -53,8 +54,13 @@ public class EnumTests {
 
         Assert.AreEqual(DynamicEnum.Parse<TestDynamicEnum>("Flag24"), flags[24]);
         Assert.AreEqual(DynamicEnum.Parse<TestDynamicEnum>("Flag24 | Flag43"), DynamicEnum.Or(flags[24], flags[43]));
+
         Assert.AreEqual(flags[24].ToString(), "Flag24");
+        Assert.AreEqual(zero.ToString(), "Zero");
+        Assert.AreEqual(DynamicEnum.GetEnumValue<TestDynamicEnum>(0).ToString(), "Zero");
         Assert.AreEqual(DynamicEnum.Or(flags[24], flags[43]).ToString(), "Flag24 | Flag43");
+        Assert.AreEqual(DynamicEnum.Or(flags[24], DynamicEnum.GetEnumValue<TestDynamicEnum>(new BigInteger(1) << 99)).ToString(), "Flag24 | Flag99");
+        Assert.AreEqual(DynamicEnum.Or(flags[24], DynamicEnum.GetEnumValue<TestDynamicEnum>(new BigInteger(1) << 101)).ToString(), (DynamicEnum.GetValue(flags[24]) | new BigInteger(1) << 101).ToString());
 
         Assert.True(DynamicEnum.IsDefined(flags[27]));
         Assert.True(DynamicEnum.IsDefined(combined));
@@ -63,7 +69,7 @@ public class EnumTests {
 
         Assert.AreEqual(
             new[] {flags[0], flags[7], flags[13], combined},
-            DynamicEnum.GetFlags(DynamicEnum.Or(DynamicEnum.Or(flags[0], flags[13]), flags[7])));
+            DynamicEnum.GetFlags(DynamicEnum.Or(DynamicEnum.Or(flags[0], flags[13]), flags[7]), false));
 
         Assert.AreEqual(
             new[] {flags[0], flags[7], flags[13]},
