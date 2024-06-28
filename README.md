@@ -19,9 +19,6 @@ public class MyEnum : DynamicEnum {
     public static readonly MyEnum FlagTwo = DynamicEnum.AddFlag<MyEnum>("FlagTwo");
     public static readonly MyEnum FlagThree = DynamicEnum.AddFlag<MyEnum>("FlagThree");
  
-    // this constructor is called internally using reflection
-    public MyEnum(string name, BigInteger value) : base(name, value) {}
-
     // you can optionally create operator overloads for easier operations
     public static implicit operator BigInteger(MyEnum value) => DynamicEnum.GetValue(value);
     public static implicit operator MyEnum(BigInteger value) => DynamicEnum.GetEnumValue<MyEnum>(value);

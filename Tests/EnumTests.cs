@@ -35,6 +35,9 @@ public class EnumTests {
         var zero = DynamicEnum.Add<TestDynamicEnum>("Zero", 0);
         var combined = DynamicEnum.Add<TestDynamicEnum>("Combined", DynamicEnum.GetValue(DynamicEnum.Or(flags[7], flags[13])));
 
+        DynamicEnum.Add<TestEnumWithConstructor>("Test", 10);
+        Assert.AreEqual(DynamicEnum.GetEnumValue<TestEnumWithConstructor>(10).ToString(), "TestModified");
+
         Assert.AreEqual(DynamicEnum.GetValue(flags[7]), BigInteger.One << 7);
         Assert.AreEqual(DynamicEnum.GetEnumValue<TestDynamicEnum>(BigInteger.One << 75), flags[75]);
 
@@ -90,9 +93,11 @@ public class EnumTests {
 
     }
 
-    private class TestDynamicEnum : DynamicEnum {
+    private class TestDynamicEnum : DynamicEnum;
 
-        public TestDynamicEnum(string name, BigInteger value, bool defined) : base(name, value, defined) {}
+    private class TestEnumWithConstructor : DynamicEnum {
+
+        public TestEnumWithConstructor(string name, BigInteger value, bool defined) : base($"{name}Modified", value, defined) {}
 
     }
 

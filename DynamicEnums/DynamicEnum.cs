@@ -30,12 +30,21 @@ namespace DynamicEnums {
     /// </remarks>
     public abstract class DynamicEnum {
 
+        private const BindingFlags ConstructorFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        private static readonly Type[] ConstructorTypes = {typeof(string), typeof(BigInteger), typeof(bool)};
         private static readonly Dictionary<Type, Storage> Storages = new Dictionary<Type, Storage>();
-        private readonly BigInteger value;
 
         private Dictionary<DynamicEnum, bool> allFlagsCache;
         private Dictionary<DynamicEnum, bool> anyFlagsCache;
+        private BigInteger value;
         private string name;
+
+        /// <summary>
+        /// Creates a new dynamic enum instance.
+        /// This constructor is protected as it is only invoked via reflection.
+        /// This constructor is only called if the class doesn't have the <see cref="DynamicEnum(string,BigInteger,bool)"/> constructor.
+        /// </summary>
+        protected DynamicEnum() {}
 
         /// <summary>
         /// Creates a new dynamic enum instance.
@@ -45,8 +54,8 @@ namespace DynamicEnums {
         /// <param name="value">The value</param>
         /// <param name="defined">Whether this enum value <see cref="IsDefined(DynamicEnum)"/>, and thus, not a combined flag.</param>
         protected DynamicEnum(string name, BigInteger value, bool defined) {
-            this.value = value;
             this.name = name;
+            this.value = value;
         }
 
         /// <summary>
@@ -445,7 +454,17 @@ namespace DynamicEnums {
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
             Type type, string name, BigInteger value, bool defined) {
-            return (DynamicEnum) Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[] {name, value, defined}, CultureInfo.InvariantCulture);
+            // try to call the constructor with parameters first
+            var parameterConstructor = type.GetConstructor(DynamicEnum.ConstructorFlags, null, DynamicEnum.ConstructorTypes, null);
+            if (parameterConstructor != null)
+                return (DynamicEnum) parameterConstructor.Invoke(DynamicEnum.ConstructorFlags, null, new object[] {name, value, defined}, CultureInfo.InvariantCulture);
+
+            // default to the empty constructor and set the values manually
+            var emptyConstructor = type.GetConstructor(DynamicEnum.ConstructorFlags, null, Type.EmptyTypes, null);
+            var ret = (DynamicEnum) emptyConstructor.Invoke(DynamicEnum.ConstructorFlags, null, null, CultureInfo.InvariantCulture);
+            ret.name = name;
+            ret.value = value;
+            return ret;
         }
 
         private class Storage {
