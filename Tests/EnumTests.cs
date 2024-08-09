@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Numerics;
 using DynamicEnums;
 using NUnit.Framework;
@@ -10,7 +11,17 @@ public class EnumTests {
     [Test]
     public void TestRegularEnums() {
         Assert.AreEqual(
+            new[] {TestEnum.Zero, TestEnum.One, TestEnum.Two, TestEnum.Eight, TestEnum.Sixteen, TestEnum.EightSixteen, TestEnum.ThirtyTwo, TestEnum.OneTwentyEight, TestEnum.OneTwentyEightTwoOne},
+            EnumHelper.GetValues<TestEnum>());
+        Assert.AreEqual(
+            new[] {TestEnum.Zero, TestEnum.One, TestEnum.Two, TestEnum.Eight, TestEnum.Sixteen, TestEnum.ThirtyTwo, TestEnum.OneTwentyEight},
+            EnumHelper.GetUniqueValues<TestEnum>());
+
+        Assert.AreEqual(
             new[] {TestEnum.One, TestEnum.Two, TestEnum.Eight, TestEnum.Sixteen, TestEnum.EightSixteen},
+            EnumHelper.GetFlags(TestEnum.One | TestEnum.Sixteen | TestEnum.Eight | TestEnum.Two, false));
+        Assert.AreEqual(
+            new[] {TestEnum.Zero, TestEnum.One, TestEnum.Two, TestEnum.Eight, TestEnum.Sixteen, TestEnum.EightSixteen},
             EnumHelper.GetFlags(TestEnum.One | TestEnum.Sixteen | TestEnum.Eight | TestEnum.Two));
 
         Assert.AreEqual(
@@ -35,8 +46,15 @@ public class EnumTests {
         var zero = DynamicEnum.Add<TestDynamicEnum>("Zero", 0);
         var combined = DynamicEnum.Add<TestDynamicEnum>("Combined", DynamicEnum.GetValue(DynamicEnum.Or(flags[7], flags[13])));
 
-        DynamicEnum.Add<TestEnumWithConstructor>("Test", 10);
+        var test = DynamicEnum.Add<TestEnumWithConstructor>("Test", 10);
         Assert.AreEqual(DynamicEnum.GetEnumValue<TestEnumWithConstructor>(10).ToString(), "TestModified");
+
+        Assert.AreEqual(
+            flags.Append(zero).Append(combined),
+            DynamicEnum.GetValues<TestDynamicEnum>());
+        Assert.AreEqual(
+            flags.Append(zero),
+            DynamicEnum.GetUniqueValues<TestDynamicEnum>());
 
         Assert.AreEqual(DynamicEnum.GetValue(flags[7]), BigInteger.One << 7);
         Assert.AreEqual(DynamicEnum.GetEnumValue<TestDynamicEnum>(BigInteger.One << 75), flags[75]);
@@ -73,6 +91,9 @@ public class EnumTests {
         Assert.AreEqual(
             new[] {flags[0], flags[7], flags[13], combined},
             DynamicEnum.GetFlags(DynamicEnum.Or(DynamicEnum.Or(flags[0], flags[13]), flags[7]), false));
+        Assert.AreEqual(
+            new[] {flags[0], flags[7], flags[13], zero, combined},
+            DynamicEnum.GetFlags(DynamicEnum.Or(DynamicEnum.Or(flags[0], flags[13]), flags[7])));
 
         Assert.AreEqual(
             new[] {flags[0], flags[7], flags[13]},
@@ -82,6 +103,7 @@ public class EnumTests {
     [Flags]
     private enum TestEnum {
 
+        Zero = 0,
         One = 1,
         Two = 2,
         Eight = 8,

@@ -201,6 +201,23 @@ namespace DynamicEnums {
         }
 
         /// <summary>
+        /// Returns a collection of all of the enum values that are explicitly defined for the given dynamic enum type <typeparamref name="T"/>, excluding any explicitly defined combined flags.
+        /// A value counts as explicitly defined if it has been added using <see cref="Add{T}"/>, <see cref="AddValue{T}"/> or <see cref="AddFlag{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type whose values to get.</typeparam>
+        /// <returns>The defined values for the given type, excluding combined flags.</returns>
+        public static IEnumerable<T> GetUniqueValues<T>() where T : DynamicEnum {
+            var used = BigInteger.Zero;
+            foreach (var value in DynamicEnum.GetValues<T>()) {
+                var iValue = DynamicEnum.GetValue(value);
+                if ((used & iValue) == 0) {
+                    yield return value;
+                    used |= iValue;
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns a collection of all of the enum values that are explicitly defined for the given dynamic enum type <paramref name="type"/>.
         /// A value counts as explicitly defined if it has been added using <see cref="Add{T}"/>, <see cref="AddValue{T}"/> or <see cref="AddFlag{T}"/>.
         /// </summary>

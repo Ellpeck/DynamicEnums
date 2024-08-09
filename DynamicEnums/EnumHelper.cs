@@ -22,6 +22,22 @@ namespace DynamicEnums {
         }
 
         /// <summary>
+        /// Returns an array containing all of the values of the given enum type, excluding any explicitly defined combined flags.
+        /// </summary>
+        /// <typeparam name="T">The type whose enum to get.</typeparam>
+        /// <returns>An enumerable of the values of the enum, in declaration order, excluding combined flags.</returns>
+        public static IEnumerable<T> GetUniqueValues<T>() where T : struct, Enum {
+            var used = 0L;
+            foreach (var value in EnumHelper.GetValues<T>()) {
+                var lValue = Convert.ToInt64(value);
+                if ((used & lValue) == 0) {
+                    yield return value;
+                    used |= lValue;
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns true if the given <paramref name="value"/> has all of the given <see cref="Enum"/> flags on it.
         /// This operation is equivalent to <see cref="Enum.HasFlag"/>, but doesn't do any additional checks, making it faster.
         /// </summary>
