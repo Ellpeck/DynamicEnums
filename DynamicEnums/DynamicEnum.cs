@@ -195,7 +195,7 @@ namespace DynamicEnums {
         /// A value counts as explicitly defined if it has been added using <see cref="Add{T}"/>, <see cref="AddValue{T}"/> or <see cref="AddFlag{T}"/>.
         /// </summary>
         /// <typeparam name="T">The type whose values to get</typeparam>
-        /// <returns>The defined values for the given type</returns>
+        /// <returns>The defined values for the given type, in the order they were added.</returns>
         public static IEnumerable<T> GetValues<T>() where T : DynamicEnum {
             return DynamicEnum.GetValues(typeof(T)).Cast<T>();
         }
@@ -205,10 +205,10 @@ namespace DynamicEnums {
         /// A value counts as explicitly defined if it has been added using <see cref="Add{T}"/>, <see cref="AddValue{T}"/> or <see cref="AddFlag{T}"/>.
         /// </summary>
         /// <typeparam name="T">The type whose values to get.</typeparam>
-        /// <returns>The defined values for the given type, excluding combined flags.</returns>
+        /// <returns>The defined values for the given type, in ascending value order, excluding combined flags.</returns>
         public static IEnumerable<T> GetUniqueValues<T>() where T : DynamicEnum {
             var used = BigInteger.Zero;
-            foreach (var value in DynamicEnum.GetValues<T>()) {
+            foreach (var value in DynamicEnum.GetValues<T>().OrderBy(DynamicEnum.GetValue)) {
                 var iValue = DynamicEnum.GetValue(value);
                 if ((used & iValue) == 0) {
                     yield return value;
@@ -222,7 +222,7 @@ namespace DynamicEnums {
         /// A value counts as explicitly defined if it has been added using <see cref="Add{T}"/>, <see cref="AddValue{T}"/> or <see cref="AddFlag{T}"/>.
         /// </summary>
         /// <param name="type">The type whose values to get</param>
-        /// <returns>The defined values for the given type</returns>
+        /// <returns>The defined values for the given type, in the order they were added.</returns>
         public static IEnumerable<DynamicEnum> GetValues(Type type) {
             return DynamicEnum.GetStorage(type).Values.Values;
         }

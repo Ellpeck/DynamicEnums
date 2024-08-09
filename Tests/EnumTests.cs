@@ -40,20 +40,20 @@ public class EnumTests {
 
     [Test]
     public void TestDynamicEnums() {
+        var combined = DynamicEnum.Add<TestDynamicEnum>("Combined", (1 << 7) | (1 << 13));
         var flags = new TestDynamicEnum[100];
         for (var i = 0; i < flags.Length; i++)
             flags[i] = DynamicEnum.AddFlag<TestDynamicEnum>("Flag" + i);
         var zero = DynamicEnum.Add<TestDynamicEnum>("Zero", 0);
-        var combined = DynamicEnum.Add<TestDynamicEnum>("Combined", DynamicEnum.GetValue(DynamicEnum.Or(flags[7], flags[13])));
 
-        var test = DynamicEnum.Add<TestEnumWithConstructor>("Test", 10);
+        DynamicEnum.Add<TestEnumWithConstructor>("Test", 10);
         Assert.AreEqual(DynamicEnum.GetEnumValue<TestEnumWithConstructor>(10).ToString(), "TestModified");
 
         Assert.AreEqual(
-            flags.Append(zero).Append(combined),
+            flags.Append(zero).Prepend(combined),
             DynamicEnum.GetValues<TestDynamicEnum>());
         Assert.AreEqual(
-            flags.Append(zero),
+            flags.Prepend(zero),
             DynamicEnum.GetUniqueValues<TestDynamicEnum>());
 
         Assert.AreEqual(DynamicEnum.GetValue(flags[7]), BigInteger.One << 7);
@@ -89,10 +89,10 @@ public class EnumTests {
         Assert.False(DynamicEnum.IsDefined(DynamicEnum.Or(combined, flags[49])));
 
         Assert.AreEqual(
-            new[] {flags[0], flags[7], flags[13], combined},
+            new[] {combined, flags[0], flags[7], flags[13]},
             DynamicEnum.GetFlags(DynamicEnum.Or(DynamicEnum.Or(flags[0], flags[13]), flags[7]), false));
         Assert.AreEqual(
-            new[] {flags[0], flags[7], flags[13], zero, combined},
+            new[] {combined, flags[0], flags[7], flags[13], zero},
             DynamicEnum.GetFlags(DynamicEnum.Or(DynamicEnum.Or(flags[0], flags[13]), flags[7])));
 
         Assert.AreEqual(
@@ -106,12 +106,12 @@ public class EnumTests {
         Zero = 0,
         One = 1,
         Two = 2,
-        Eight = 8,
-        Sixteen = 16,
         EightSixteen = TestEnum.Eight | TestEnum.Sixteen,
+        Eight = 8,
+        OneTwentyEightTwoOne = TestEnum.OneTwentyEight | TestEnum.Two | TestEnum.One,
         ThirtyTwo = 32,
+        Sixteen = 16,
         OneTwentyEight = 128,
-        OneTwentyEightTwoOne = TestEnum.OneTwentyEight | TestEnum.Two | TestEnum.One
 
     }
 
