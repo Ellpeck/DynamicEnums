@@ -110,7 +110,7 @@ namespace DynamicEnums {
                         var otherValue = DynamicEnum.GetValue(other);
                         if (otherValue != 0) {
                             if (included.Length > 0)
-                                included.Append(" | ");
+                                included.Append(", ");
                             included.Append(other);
                             remain &= ~otherValue;
                         }
@@ -426,7 +426,7 @@ namespace DynamicEnums {
             var cache = DynamicEnum.GetStorage(type).ParseCache;
             if (!cache.TryGetValue(strg, out var cached)) {
                 BigInteger? accum = null;
-                foreach (var val in strg.Split('|')) {
+                foreach (var val in strg.Split(',')) {
                     foreach (var defined in DynamicEnum.GetValues(type)) {
                         if (defined.name == val.Trim()) {
                             accum = (accum ?? 0) | DynamicEnum.GetValue(defined);

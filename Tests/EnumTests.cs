@@ -74,13 +74,13 @@ public class EnumTests {
         Assert.AreEqual(flags[24].HasAnyFlags(DynamicEnum.GetEnumValue<TestDynamicEnum>(0)), false);
 
         Assert.AreEqual(DynamicEnum.Parse<TestDynamicEnum>("Flag24"), flags[24]);
-        Assert.AreEqual(DynamicEnum.Parse<TestDynamicEnum>("Flag24 | Flag43"), DynamicEnum.Or(flags[24], flags[43]));
+        Assert.AreEqual(DynamicEnum.Parse<TestDynamicEnum>("Flag24, Flag43"), DynamicEnum.Or(flags[24], flags[43]));
 
         Assert.AreEqual(flags[24].ToString(), "Flag24");
         Assert.AreEqual(zero.ToString(), "Zero");
         Assert.AreEqual(DynamicEnum.GetEnumValue<TestDynamicEnum>(0).ToString(), "Zero");
-        Assert.AreEqual(DynamicEnum.Or(flags[24], flags[43]).ToString(), "Flag24 | Flag43");
-        Assert.AreEqual(DynamicEnum.Or(flags[24], DynamicEnum.GetEnumValue<TestDynamicEnum>(new BigInteger(1) << 99)).ToString(), "Flag24 | Flag99");
+        Assert.AreEqual(DynamicEnum.Or(flags[24], flags[43]).ToString(), "Flag24, Flag43");
+        Assert.AreEqual(DynamicEnum.Or(flags[24], DynamicEnum.GetEnumValue<TestDynamicEnum>(new BigInteger(1) << 99)).ToString(), "Flag24, Flag99");
         Assert.AreEqual(DynamicEnum.Or(flags[24], DynamicEnum.GetEnumValue<TestDynamicEnum>(new BigInteger(1) << 101)).ToString(), (DynamicEnum.GetValue(flags[24]) | new BigInteger(1) << 101).ToString());
 
         Assert.True(DynamicEnum.IsDefined(flags[27]));

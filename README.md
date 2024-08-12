@@ -48,11 +48,11 @@ bool hasAll = allFlags1.HasAllFlags(MyEnum.FlagOne | MyEnum.ValueOne); // false
 
 // displaying a dynamic enum value or flag
 Console.WriteLine(MyEnum.FlagOne); // "FlagOne"
-Console.WriteLine(allFlags1); // "FlagOne | FlagTwo | FlagThree"
+Console.WriteLine(allFlags1); // "FlagOne, FlagTwo, FlagThree"
 
 // parsing a dynamic enum value
 MyEnum parsed1 = DynamicEnum.Parse<MyEnum>("FlagOne");
-MyEnum parsed2 = DynamicEnum.Parse<MyEnum>("FlagOne | FlagThree");
+MyEnum parsed2 = DynamicEnum.Parse<MyEnum>("FlagOne, FlagThree");
 ```
 
 You can also check out [the tests](https://github.com/Ellpeck/DynamicEnums/tree/main/Tests) for some more complex examples.
