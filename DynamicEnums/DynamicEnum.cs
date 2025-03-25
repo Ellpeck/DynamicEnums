@@ -396,7 +396,7 @@ namespace DynamicEnums {
 
         /// <summary>
         /// Parses the given <see cref="string"/> into a dynamic enum value and returns the result.
-        /// This method supports defined enum values as well as values combined using the pipe (|) character and any number of spaces.
+        /// This method supports defined enum values as well as values combined using a comma and any number of spaces.
         /// If no enum value can be parsed, null is returned.
         /// </summary>
         /// <param name="strg">The string to parse into a dynamic enum value</param>
@@ -412,7 +412,7 @@ namespace DynamicEnums {
 
         /// <summary>
         /// Parses the given <see cref="string"/> into a dynamic enum value and returns the result.
-        /// This method supports defined enum values as well as values combined using the pipe (|) character and any number of spaces.
+        /// This method supports defined enum values as well as values combined using a comma and any number of spaces.
         /// If no enum value can be parsed, null is returned.
         /// </summary>
         /// <param name="type">The type of the dynamic enum value to parse</param>
